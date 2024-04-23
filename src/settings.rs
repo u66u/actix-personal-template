@@ -1,3 +1,4 @@
+use dotenvy::dotenv;
 use lazy_static::lazy_static;
 
 pub struct Settings {
@@ -5,13 +6,24 @@ pub struct Settings {
     pub cookie_secret: String,
     pub implicit_assertion: String,
 
-    pub email_host: String,     // For gmail it's smtp.gmail.com
-    pub email_user: String,     // For gmail it's your email
-    pub email_password: String, // For gmail it's an "app password"
+    pub database_url: String,
+
+    pub email_host: String,
+    pub email_user: String,
+    pub email_password: String,
 }
 
 lazy_static! {
     pub static ref SETTINGS: Settings = {
+        dotenv().ok();
+        let database_url = format!(
+            "postgres://{}:{}@{}:{}/{}",
+            std::env::var("POSTGRES_USER").unwrap(),
+            std::env::var("POSTGRES_PASSWORD").unwrap(),
+            std::env::var("DATABASE_HOST").unwrap(),
+            std::env::var("DATABASE_PORT").unwrap(),
+            std::env::var("DATABASE_NAME").unwrap()
+        );
         Settings {
             auth_cookie_name: "auth".to_string(),
             cookie_secret: "k4.local.HlMBf5cHedQSsyRtvxl2ACFTt7hGaOi7vLZxmZzv6TY".to_string(),
@@ -19,6 +31,7 @@ lazy_static! {
             email_host: "smtp.gmail.com".to_string(),
             email_user: std::env::var("APP_USER").unwrap(),
             email_password: std::env::var("APP_PASS").unwrap(),
+            database_url,
         }
     };
 }
