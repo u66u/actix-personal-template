@@ -26,7 +26,7 @@ lazy_static! {
         );
         Settings {
             auth_cookie_name: "auth".to_string(),
-            cookie_secret: "k4.local.HlMBf5cHedQSsyRtvxl2ACFTt7hGaOi7vLZxmZzv6TY".to_string(),
+            cookie_secret: std::env::var("SYMMETRIC_KEY").unwrap(), // need to_string here?
             implicit_assertion: "abc".to_string(),
             email_host: "smtp.gmail.com".to_string(),
             email_user: std::env::var("APP_USER").unwrap(),

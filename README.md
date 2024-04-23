@@ -3,8 +3,9 @@
 wget https://raw.githubusercontent.com/bigskysoftware/htmx/master/src/htmx.js -O assets/htmx.js
 ```
 
-2. Fill in the .env
+2. Fill in the .env (get a symmetric key first, which serves as a cookie secret key)
 ```
+cargo run --bin generate_symmetrickey
 cp .env.example .env
 ```
 
